@@ -19,6 +19,7 @@ def svm_loss_naive(W, X, y, reg):
   - loss as single float
   - gradient with respect to weights W; an array of same shape as W
   """
+  #dW will be an array of shape (3073, 10) same as W
   dW = np.zeros(W.shape) # initialize the gradient as zero
 
   # compute the loss and the gradient
@@ -26,6 +27,7 @@ def svm_loss_naive(W, X, y, reg):
   num_train = X.shape[0]
   loss = 0.0
   for i in range(num_train):
+    # X is of shape (500, 3073), W is of shape (3073, 10)
     scores = X[i].dot(W)
     correct_class_score = scores[y[i]]
     for j in range(num_classes):
@@ -34,13 +36,26 @@ def svm_loss_naive(W, X, y, reg):
       margin = scores[j] - correct_class_score + 1 # note delta = 1
       if margin > 0:
         loss += margin
+        #SVM Loss function is Sum(Max(0, W[j].T.dot(X[i]) - W[y[i]].T.dot(X[i]) + delta))
+        #Since there is max function, derivative applicable only if Sum > 0 
+        #Partial derivative w.r.t W[y[i]] is substraction from dW
+        #Partial derivative w.r.t W[j] is addition to dW
+        #Substract Image Vector from every correct classifier score vector
+        dW[:,y[i]] -= X[i]
+        #Add Image vector for every incorrect classifier score vector
+        dW[:, j] += X[i]
 
   # Right now the loss is a sum over all training examples, but we want it
   # to be an average instead so we divide by num_train.
   loss /= num_train
+  # Divide all over training examples
+  dW /= num_train
 
   # Add regularization to the loss.
   loss += reg * np.sum(W * W)
+  
+  # Add regularization
+  dW += reg * W
 
   #############################################################################
   # TODO:                                                                     #
@@ -50,6 +65,8 @@ def svm_loss_naive(W, X, y, reg):
   # loss is being computed. As a result you may need to modify some of the    #
   # code above to compute the gradient.                                       #
   #############################################################################
+
+  
 
 
   return loss, dW
@@ -69,7 +86,7 @@ def svm_loss_vectorized(W, X, y, reg):
   # Implement a vectorized version of the structured SVM loss, storing the    #
   # result in loss.                                                           #
   #############################################################################
-  pass
+  np.sum(X.dot(W) - y, axis=0) + 1
   #############################################################################
   #                             END OF YOUR CODE                              #
   #############################################################################
