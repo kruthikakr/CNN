@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 
 # This is a bit of magic to make matplotlib figures appear inline in the
 # notebook rather than in a new window.
-plt.rcParams['figure.figsize'] = (10.0, 8.0) # set default size of plots
+plt.rcParams['figure.figsize'] = (10.0, 8.0)  # set default size of plots
 plt.rcParams['image.interpolation'] = 'nearest'
 plt.rcParams['image.cmap'] = 'gray'
 
@@ -17,11 +17,11 @@ cifar10_dir = 'cs231n/datasets/cifar-10-batches-py'
 
 # Cleaning up variables to prevent loading data multiple times (which may cause memory issue)
 try:
-   del X_train, y_train
-   del X_test, y_test
-   print('Clear previously loaded data.')
+    del X_train, y_train
+    del X_test, y_test
+    print('Clear previously loaded data.')
 except:
-   pass
+    pass
 
 X_train, y_train, X_test, y_test = load_CIFAR10(cifar10_dir)
 
@@ -33,7 +33,8 @@ print('Test labels shape: ', y_test.shape)
 
 # Visualize some examples from the dataset.
 # We show a few examples of training images from each class.
-classes = ['plane', 'car', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship', 'truck']
+classes = ['plane', 'car', 'bird', 'cat', 'deer',
+           'dog', 'frog', 'horse', 'ship', 'truck']
 num_classes = len(classes)
 samples_per_class = 7
 for y, cls in enumerate(classes):
@@ -104,9 +105,10 @@ print('dev data shape: ', X_dev.shape)
 # Preprocessing: subtract the mean image
 # first: compute the image mean based on the training data
 mean_image = np.mean(X_train, axis=0)
-print(mean_image[:10]) # print a few of the elements
-plt.figure(figsize=(4,4))
-plt.imshow(mean_image.reshape((32,32,3)).astype('uint8')) # visualize the mean image
+print(mean_image[:10])  # print a few of the elements
+plt.figure(figsize=(4, 4))
+plt.imshow(mean_image.reshape((32, 32, 3)).astype(
+    'uint8'))  # visualize the mean image
 plt.show()
 
 # second: subtract the mean image from train and test data
@@ -125,11 +127,11 @@ X_dev = np.hstack([X_dev, np.ones((X_dev.shape[0], 1))])
 print(X_train.shape, X_val.shape, X_test.shape, X_dev.shape)
 
 # Evaluate the naive implementation of the loss we provided for you:
-from cs231n.classifiers.linear_svm import svm_loss_naive
+from cs231n.classifiers.linear_svm import svm_loss_naive, svm_loss_vectorized
 import time
 
 # generate a random SVM weight matrix of small numbers
-W = np.random.randn(3073, 10) * 0.0001 
+W = np.random.randn(3073, 10) * 0.0001
 
-loss, grad = svm_loss_naive(W, X_dev, y_dev, 0.000005)
+loss, grad = svm_loss_vectorized(W, X_dev, y_dev, 0.000005)
 print('loss: %f' % (loss, ))
