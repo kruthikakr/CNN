@@ -43,8 +43,8 @@ def softmax_loss_naive(W, X, y, reg):
 
         for n in range(num_classes):
             probability_current = p(n)
-            #For True score we have to substract X[i]
-            #Since sum of probabilities is 1, we can substract 1 for true class
+            # Softmax Derivation
+            #https://eli.thegreenplace.net/2016/the-softmax-function-and-its-derivative/
             dW[:, n] += (probability_current - (n == y[i])) * X[i,:]
 
     loss /= num_train
@@ -87,7 +87,7 @@ def softmax_loss_vectorized(W, X, y, reg):
     probability = np.exp(scores) / totals
     loss = np.sum(-np.log(probability[np.arange(num_train),y])) / num_train
 
-    probability[np.arange(num_train), y] = -1
+    probability[np.arange(num_train), y] -= 1
     dW = X.T.dot(probability) / num_train
     #############################################################################
     #                          END OF YOUR CODE                                 #

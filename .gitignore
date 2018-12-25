@@ -1,3 +1,4 @@
 *.tar.gz
 .vscode/*
 002-ImageClassification/assignment1/cs231n/datasets/cifar-10-batches-py/*
+*.mp4
