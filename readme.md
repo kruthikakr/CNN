@@ -1,4 +1,4 @@
-## Convolutional Neural Networks - Stanford CS231n Course by Andrej Karpathy and Serena Yeung
+## Convolutional Neural Networks - Stanford CS231n Course by Justin Johnson and Serena Yeung
 
 This repository contains course documents, notes and assignments for CS231n. 
 
